@@ -1,12 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "cell.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-}
+#include <iostream>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QDebug>
 
 MainWindow::~MainWindow()
 {
@@ -14,101 +13,87 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+
+void MainWindow::onPushButtonClicked()
 {
 
 }
 
-void MainWindow::on_SpeedSlider_sliderMoved(int position)
+void MainWindow::onSpeedSliderSliderMoved(int position)
 {
 
 }
 
-void MainWindow::on_StepButton_clicked()
+void MainWindow::onStepButtonClicked()
 {
 
 }
 
-void MainWindow::on_PlayButton_clicked()
+void MainWindow::onPlayButtonClicked()
 {
 
 }
 
-void MainWindow::on_PauseButton_clicked()
+void MainWindow::onPauseButtonClicked()
 {
 
 }
 
-//int PlotWindow::random_clicks_ = 0;
+//int MainWindow::random_clicks_ = 0;
 
-//PlotWindow::PlotWindow(QWidget *parent) :
-//    QMainWindow(parent),
-//    ui(new Ui::PlotWindow)
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    // we need to set up the ui before we draw on our scene
+    ui->setupUi(this);
+
+    // scene is a pointer field of plot window
+    scene = new QGraphicsScene;
+
+    // QGraphicsView is a container for a QGraphicsScene
+    QGraphicsView * view = ui->cellView;
+    view->setScene(scene);
+    view->setSceneRect(0,0,view->frameSize().width(),view->frameSize().height());
+
+
+    //srand(time(0));
+
+
+    qDebug() << "Here's an example debugging statement";
+
+
+
+    // Day 1, Task 2, number 5:
+    // use the scene->addLine method to add lines to your scene for the x and y axes.
+    // you may find the view->frameSize.[width()|height()] methods helpful as well.
+    int x_mid = view->frameSize().height() / 2;
+    int y_mid = view->frameSize().width() / 2;
+
+    // draw the axes
+    //scene->addLine(0, x_mid, view->frameSize().width(), x_mid);
+    //scene->addLine(y_mid, 0, y_mid, view->frameSize().height());
+
+
+    // Day 1, Task 5, number 2:
+    // connect the random button's &QAbstractButton::pressed event to the MainWindow's new slot
+    // connect(sender, sender signal, receiver, receiver slot)
+    connect(ui->StepButton, &QAbstractButton::clicked, this, &MainWindow::onStepButtonClicked);
+
+    // signals and slots in Qt are loosely coupled
+
+    // Day 2, Task 2
+    connect(ui->PlayButton, &QAbstractButton::clicked, this, &MainWindow::onPlayButtonClicked);
+
+    connect(ui->PauseButton, &QAbstractButton::clicked, this, &MainWindow::onPauseButtonClicked);
+
+
+}
+
+
+// Day 2, Task 2
+//void MainWindow::AddPoint()
 //{
-//    // we need to set up the ui before we draw on our scene
-//    ui->setupUi(this);
-
-//    // scene is a pointer field of plot window
-//    scene = new QGraphicsScene;
-
-//    // QGraphicsView is a container for a QGraphicsScene
-//    QGraphicsView * view = ui->plotGraphicsView;
-//    view->setScene(scene);
-//    view->setSceneRect(0,0,view->frameSize().width(),view->frameSize().height());
-
-
-//    srand(time(0));
-
-
-//    qDebug() << "Here's an example debugging statement";
-
-
-
-//    // Day 1, Task 2, number 5:
-//    // use the scene->addLine method to add lines to your scene for the x and y axes.
-//    // you may find the view->frameSize.[width()|height()] methods helpful as well.
-//    int x_mid = view->frameSize().height() / 2;
-//    int y_mid = view->frameSize().width() / 2;
-
-//    // draw the axes
-//    scene->addLine(0, x_mid, view->frameSize().width(), x_mid);
-//    scene->addLine(y_mid, 0, y_mid, view->frameSize().height());
-
-
-//    // Day 1, Task 5, number 2:
-//    // connect the random button's &QAbstractButton::pressed event to the PlotWindow's new slot
-//    // connect(sender, sender signal, receiver, receiver slot)
-//    connect(ui->randomButton, &QAbstractButton::pressed, this, &PlotWindow::SlotTest);
-
-//    // signals and slots in Qt are loosely coupled
-
-//    // Day 2, Task 2
-//    connect(ui->addButton, &QAbstractButton::clicked, this, &PlotWindow::AddPoint);
-
-//}
-
-
-
-//PlotWindow::~PlotWindow()
-//{
-//    delete ui;
-//}
-
-//// Day 1, Task 4, number 2
-//void PlotWindow::on_randomButton_clicked()
-//{
-//    qDebug() << "random button clicked";
-//}
-
-
-//// Day 1, Task 5, number 1
-//void PlotWindow::SlotTest()
-//{
-//    qDebug() << "random button pressed";
-//}
-
-//// Day 2, Task 2
-//void PlotWindow::AddPoint() {
 //    bool safe = false;
 //    int x = ui->xCoord->text().toInt(&safe);
 //    if (!safe) {
@@ -128,14 +113,15 @@ void MainWindow::on_PauseButton_clicked()
 //    // account for the height of the point (which is the same as the width because it's a circle)
 //    y_adj = y_adj - Point::get_width() / 2;
 //    Point * p = new Point(c, x_adj, y_adj);
-//    connect(p, &Point::PointSelected, this, &PlotWindow::PointClickedSlot);
+//    connect(p, &Point::PointSelected, this, &MainWindow::PointClickedSlot);
 //    scene->addItem(p);
 
 
 //}
 
-//// Day 2, Task 3
-//void PlotWindow::PointClickedSlot(int x, int y) {
+// Day 2, Task 3
+//void MainWindow::PointClickedSlot(int x, int y)
+//{
 //    qDebug() << x;
 //    qDebug() << y;
 //    qDebug() << "point clicked slot!";
@@ -145,3 +131,9 @@ void MainWindow::on_PauseButton_clicked()
 //    QString s(p1.c_str());
 //    ui->point1Label->setText(s);
 //}
+
+
+
+
+
+

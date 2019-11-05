@@ -80,7 +80,8 @@ void PlotWindow::SlotTest()
 }
 
 // Day 2, Task 2
-void PlotWindow::AddPoint() {
+void PlotWindow::AddPoint()
+{
     bool safe = false;
     int x = ui->xCoord->text().toInt(&safe);
     if (!safe) {
