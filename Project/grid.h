@@ -5,10 +5,13 @@
 
 #include <vector>
 
+using namespace std;
+
 
 class Grid
 {
 public:
+    //Constructor, on creation, will go through board and randomely create alive and dead cells
     Grid();
 
 private:

@@ -31,6 +31,8 @@ QPainterPath Cell::shape() const
 
 
 //CHANGE COLOR
+//If alive... have a color
+//If dead... have be white
 void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(widget);
