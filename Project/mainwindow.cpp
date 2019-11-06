@@ -61,8 +61,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     //qDebug() << "Here's an example debugging statement";
 
-//    //Makes an instance of the board with pointers scene and view
-//    Grid g(scene, view);
       g = Grid(scene, view);
 
     //Connecting the signals and the slots

@@ -75,3 +75,82 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
         cell_grid.push_back(temp_row);
     }
 }
+
+void Grid::next_turn(Cell* current_cell)
+{
+    int neighbor = 0;
+
+    //Traverses row
+    for (int i = 0; i < 10; i++)
+    {
+        //Height
+        for (int j = 0; j < 20; j++)
+        {
+            //Top row special case
+            if (i == 0)
+            {
+
+            }
+
+            //Bottom row special case
+            else if (i == 9)
+            {
+
+            }
+
+            //Left column special case
+            else if (j == 0)
+            {
+
+            }
+
+            //Right column special case
+            else if (j == 19)
+            {
+
+            }
+
+            //Normal case, not on edges
+            else
+            {
+//                //Check neighbors
+//                if (cell_grid[i + 1][j] != NULL)
+//                {
+//                    //If alive, add TODO add conditional
+//                    if (cell_grid[i + 1][j]->alive_ == true)
+//                    {
+//                        neighbor++;
+//                    }
+//                }
+//                if (cell_grid[i - 1][j] != NULL)
+//                {
+//                    neighbor++;
+//                }
+//                if (cell_grid[i][j + 1] != NULL)
+//                {
+//                    neighbor++;
+//                }
+//                if (cell_grid[i][j - 1] != NULL)
+//                {
+//                    neighbor++;
+//                }
+//                if (cell_grid[i - 1][j - 1] != NULL)
+//                {
+//                    neighbor++;
+//                }
+//                if (cell_grid[i + 1][j + 1] != NULL)
+//                {
+//                    neighbor++;
+//                }
+//                if (cell_grid[i - 1][j + 1] != NULL)
+//                {
+//                    neighbor++;
+//                }
+//                if (cell_grid[i + 1][j - 1] != NULL)
+//                {
+//                    neighbor++;
+//                }
+            }
+        }
+    }
+}

@@ -22,7 +22,8 @@ public:
     Grid() {}
 
     //Alters the cell_grid 2D vector with the new values for the cells after applying the supplied algo
-    void next_turn();
+    //Takes input of current cell we are on in the map
+    void next_turn(Cell* current_cell);
 
 private:
     vector<vector<Cell*>> cell_grid; //Is a 2D vector that will contain pointers of all the cells in the game
