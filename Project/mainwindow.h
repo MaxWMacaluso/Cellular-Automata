@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <cell.h>
 
 namespace Ui
 {
@@ -17,12 +18,15 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow(); //Deconstructor
 
+public:
 
 //PRIVATE VARIABLE
 private:
     Ui::MainWindow* ui;
     QGraphicsScene* scene;
     //static int random_clicks_;
+    //Cell table[10][20]; // board of cells
+    int population_;
 
 //SLOTS
 private slots:

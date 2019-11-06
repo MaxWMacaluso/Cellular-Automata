@@ -2,6 +2,9 @@
 #define GRID_H
 
 #include "cell.h"
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QDebug>
 
 #include <vector>
 
@@ -12,7 +15,7 @@ class Grid
 {
 public:
     //Constructor, on creation, will go through board and randomely create alive and dead cells
-    Grid();
+    Grid(QGraphicsScene *scene, QGraphicsView *view);
 
 private:
     vector<vector<Cell>> cell_grid; //Is a 2D vector that will contain all of the cells in the game

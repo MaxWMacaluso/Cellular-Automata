@@ -10,7 +10,7 @@ class Cell : public QObject, public QGraphicsItem
     Q_OBJECT
 
 public:
-    Cell(QColor color, const int x, const int y);  //Constructor
+    Cell(QColor color, const int x, const int y, bool a ,int w, int h);  //Constructor
 
     int get_x() const {return x_;}  //Returns x coordinate
     int get_y() const {return y_;}  //Returns y coordinate
@@ -26,9 +26,11 @@ public:
 
 signals:
     //void CellSelected(int x, int y); //For distance
+    void RightClick(Cell * c);
+    void LeftClick(Cell * c);
 
 protected:
-    //void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
 
 
@@ -37,7 +39,8 @@ private:
   int y_; //Y coordinate
   QColor color_; //Color of cell
   static const int width_ = 20; //Width of cell
-  bool alive; //Dead or alive
+  //int height_ = 10
+  bool alive_; //Dead or alive
 };
 
 #endif

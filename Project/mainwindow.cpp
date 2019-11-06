@@ -7,6 +7,11 @@
 #include <QGraphicsView>
 #include <QDebug>
 
+#include <stdlib.h>
+#include <time.h>
+#include <grid.h>
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -39,7 +44,7 @@ void MainWindow::onPauseButtonClicked()
 
 }
 
-//int MainWindow::random_clicks_ = 0;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -54,30 +59,64 @@ MainWindow::MainWindow(QWidget *parent) :
     // QGraphicsView is a container for a QGraphicsScene
     QGraphicsView * view = ui->cellView;
     view->setScene(scene);
-    view->setSceneRect(0,0,view->frameSize().width(),view->frameSize().height());
+    view->setSceneRect(0,0,view->frameSize().width()-20,view->frameSize().height()-20);
 
 
     //srand(time(0));
 
 
     qDebug() << "Here's an example debugging statement";
+     Grid g(scene,view);
+
+
+//    // create board... with lines and such
+//    int cellHeight = view->frameSize().height()-20;
+//    qDebug()<<cellHeight;
+//    int cellWidth = view->frameSize().width()-20;
+//    qDebug()<< cellWidth;
+//    for(int i = 0; i < view->frameSize().width(); i += (cellWidth/20)) {
+//            scene->addLine(i, 0, i, cellHeight);
+//    }
+//    for(int i = 0; i < view->frameSize().height(); i += (cellHeight/10)) {
+//            scene->addLine(0, i, cellWidth, i);
+//    }
 
 
 
-    // Day 1, Task 2, number 5:
-    // use the scene->addLine method to add lines to your scene for the x and y axes.
-    // you may find the view->frameSize.[width()|height()] methods helpful as well.
-    int x_mid = view->frameSize().height() / 2;
-    int y_mid = view->frameSize().width() / 2;
 
-    // draw the axes
-    //scene->addLine(0, x_mid, view->frameSize().width(), x_mid);
-    //scene->addLine(y_mid, 0, y_mid, view->frameSize().height());
+//    /* initialize random seed: */
+//    srand (time(NULL));
+
+//    /* generate secret number between 0 and 10: */
+
+//    int aliveProb;
+//    bool aliveBOOL;
+//    QColor green(Qt::green);
+//    QColor red(Qt::gray);
+//    QColor insert;
+//    for(int i =0;i<10;i++){
+//        for (int j=0;j<20;j++){
+//            aliveProb = rand() % 10;
+//            //qDebug() << aliveProb;
+//            if(aliveProb < 5){
+//                insert = green;
+//                aliveBOOL = true;
+//                population_++;
+//            }
+//            else{
+//                insert = red;
+//                aliveBOOL = false;
+//            }
+//            Cell * newCell = new Cell(insert, j, i, aliveBOOL,cellWidth/20,cellHeight/10);
+//            //table[i][j] = newCell;
+//            scene->addItem(newCell);
+//        }
+//    }
 
 
-    // Day 1, Task 5, number 2:
-    // connect the random button's &QAbstractButton::pressed event to the MainWindow's new slot
-    // connect(sender, sender signal, receiver, receiver slot)
+
+
+
     connect(ui->StepButton, &QAbstractButton::clicked, this, &MainWindow::onStepButtonClicked);
 
     // signals and slots in Qt are loosely coupled

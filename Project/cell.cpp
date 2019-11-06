@@ -7,12 +7,12 @@
 #include <QtWidgets>
 
 //CONSTRUCTOR
-Cell::Cell(QColor color, const int x, const int y)
+Cell::Cell(QColor color, const int x, const int y,bool a, int w, int h)
 {
   this->color_ = color; //Sets the color
-  x_ = x; //Sets the x coordinate
-  y_ = y; //Sets the y coordinate
-  alive = false; //Initializes it to false
+  x_ = x* (721/20); //Sets the x coordinate
+  y_ = y * (301/10); //Sets the y coordinate
+  alive_ = a; //Initializes it to a
 }
 
 //Defines clickable area
@@ -38,40 +38,24 @@ void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
     Q_UNUSED(widget);
 
     QBrush b = painter->brush();
-    painter->setBrush(QBrush(color_.dark(option->state & QStyle::State_Sunken ? 120 : 100)));
+    painter->setBrush(QBrush(color_));
 
     painter->drawRect(QRect(this->x_, this->y_, this->width_, this->width_));
     painter->setBrush(b);
 }
 
+void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(event->buttons() == Qt::RightButton){
+        emit RightClick(this);
+    }
+    if(event->buttons() == Qt::LeftButton){
+        emit LeftClick(this);
+    }
 
-//void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event)
-//{
-//    // Day 2, Task 3
-//    qDebug() << x_;
-//    qDebug() << y_;
-//    qDebug() << "Cell clicked!";
-//    emit CellSelected(x_, y_);
+}
 
-//    // Day 2, Task 4
-//    int red = rand() % 255;
-//    int green = rand() % 255;
-//    int blue = rand() % 255;
-//    QColor c(red, green, blue);
-//    color_ = c;
 
-//    // update this QGraphicsItem (force it to re-draw)
-//    update();
-//}
-
-//CALCULATES DISTANCE BETWEEN THIS CELL AND ANOTHER CELL
-//INPUT PARAMETER IS DISTANCE TO ANOTHER CELL
-//double Cell::Distance(const Cell &other) const
-//{
-//  double distance = (x_ - other.get_x()) * (x_ - other.get_x());
-//  distance += (y_ - other.y_) * (y_ - other.y_);
-//  return sqrt(distance);
-//}
 
 
 ////Makes it so the == operator will have the behavior that you expect when comparing Cells.
