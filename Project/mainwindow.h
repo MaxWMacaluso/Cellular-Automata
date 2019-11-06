@@ -5,11 +5,14 @@
 #include <QMainWindow>
 #include <cell.h>
 
+#include "grid.h"
+
 namespace Ui
 {
 class MainWindow;
 }
 
+//Subclass of QMainWindow
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -24,9 +27,9 @@ public:
 private:
     Ui::MainWindow* ui;
     QGraphicsScene* scene;
-    //static int random_clicks_;
-    //Cell table[10][20]; // board of cells
     int population_;
+
+    Grid g; //Makes an instance of the board with pointers scene and view
 
 //SLOTS
 private slots:
@@ -35,7 +38,6 @@ private slots:
     void onStepButtonClicked();
     void onPlayButtonClicked();
     void onPauseButtonClicked();
-
 
 };
 

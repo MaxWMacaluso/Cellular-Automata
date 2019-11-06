@@ -1,4 +1,5 @@
 #include "grid.h"
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -7,47 +8,69 @@
 //Constructor, randomely creates a grib of alive and dead cells
 Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
 {
-    // create board... with lines and such
-    int cellHeight = view->frameSize().height()-20;
-    qDebug()<<cellHeight;
-    int cellWidth = view->frameSize().width()-20;
-    qDebug()<< cellWidth;
-    for(int i = 0; i < view->frameSize().width(); i += (cellWidth/20)) {
+    //Creates a grid
+    int cellHeight = view->frameSize().height() - 20;
+    int cellWidth = view->frameSize().width() - 20;
+    for (int i = 0; i < view->frameSize().width(); i += (cellWidth / 20))
+    {
             scene->addLine(i, 0, i, cellHeight);
     }
-    for(int i = 0; i < view->frameSize().height(); i += (cellHeight/10)) {
+
+    for (int i = 0; i < view->frameSize().height(); i += (cellHeight / 10))
+    {
             scene->addLine(0, i, cellWidth, i);
     }
 
 
 
 
-    /* initialize random seed: */
+    //Seeds it. Do once
     srand (time(NULL));
 
-    /* generate secret number between 0 and 10: */
+    int aliveProb = 0;
 
-    int aliveProb;
-    bool aliveBOOL;
-    QColor green(Qt::green);
-    QColor red(Qt::gray);
-    QColor insert;
-    for(int i =0;i<10;i++){
-        for (int j=0;j<20;j++){
-            aliveProb = rand() % 10;
-            //qDebug() << aliveProb;
-            if(aliveProb < 5){
-                insert = green;
-                aliveBOOL = true;
-                //population_++;
+    bool alive = false;
+
+    //Colors of cells
+    QColor red(Qt::red); //Alive
+    QColor white(Qt::white); //Dead
+
+    //Will be the color of the cell I create
+    QColor cell_color;
+
+    vector<Cell*> temp_row;
+
+    //Traverses row
+    for (int i = 0; i < 10; i++)
+    {
+        //Height
+        for (int j = 0; j < 20; j++)
+        {
+            aliveProb = rand() % 10; //Random number [0, 10]
+
+            //Alive cell...
+            if (aliveProb < 5)
+            {
+                cell_color = red;
+                alive = true;
             }
-            else{
-                insert = red;
-                aliveBOOL = false;
+            //Dead cell...
+            else
+            {
+                cell_color = white;
+                alive = false;
             }
-            Cell * newCell = new Cell(insert, j, i, aliveBOOL,cellWidth/20,cellHeight/10);
-            //table[i][j] = newCell;
+
+            //Create a new cell
+            Cell* newCell = new Cell(cell_color, j, i, alive);
+
+            //Add each new cell in row to remp_row
+            temp_row.push_back(newCell);
+
             scene->addItem(newCell);
         }
+
+        //Once its gone through the whole row, add to final cell_grid
+        cell_grid.push_back(temp_row);
     }
 }
