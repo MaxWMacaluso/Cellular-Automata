@@ -10,7 +10,7 @@ class Cell : public QObject, public QGraphicsItem
     Q_OBJECT
 
 public:
-    Cell(QColor color, const int x, const int y, bool alive);  //Constructor
+    Cell(QColor color, const int x, const int y, bool alive, bool next_alive);  //Constructor
 
     int get_x() const {return x_;}  //Returns x coordinate
     int get_y() const {return y_;}  //Returns y coordinate
@@ -40,6 +40,8 @@ private:
   static const int size_ = 20; //Width of cell
 
   bool alive_; //Dead or alive
+
+  bool next_alive_;
 };
 
 #endif

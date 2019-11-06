@@ -27,7 +27,6 @@ public:
 private:
     Ui::MainWindow* ui;
     QGraphicsScene* scene;
-    int population_;
 
     Grid g; //Makes an instance of the board with pointers scene and view
 

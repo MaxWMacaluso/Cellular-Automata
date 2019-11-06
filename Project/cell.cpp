@@ -7,7 +7,7 @@
 #include <QtWidgets>
 
 //CONSTRUCTOR
-Cell::Cell(QColor color, const int x, const int y, bool alive)
+Cell::Cell(QColor color, const int x, const int y, bool alive, bool next_alive)
 {
   this->color_ = color; //Sets the color
 
@@ -15,6 +15,8 @@ Cell::Cell(QColor color, const int x, const int y, bool alive)
   y_ = y * (301 / 10); //Sets the y coordinate
 
   alive_ = alive; //Initializes it to a
+
+  next_alive_ = next_alive;
 
 }
 
@@ -35,14 +37,23 @@ QPainterPath Cell::shape() const
 
 //CHANGE COLOR
 //If alive... have a color
-//If dead... have be white
+//If dead... be white
 void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(widget);
 
     QBrush b = painter->brush();
-    painter->setBrush(QBrush(color_));
 
+    //If alive set color to red
+    if (this->alive_ == true)
+    {
+        painter->setBrush(QBrush(Qt::red));
+    }
+    //If dead set color to white
+    else
+    {
+        painter->setBrush(QBrush(Qt::white));
+    }
     painter->drawRect(QRect(this->x_, this->y_, this->size_, this->size_));
     painter->setBrush(b);
 }

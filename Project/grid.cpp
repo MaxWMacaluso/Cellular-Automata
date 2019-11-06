@@ -21,15 +21,15 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
             scene->addLine(0, i, cellWidth, i);
     }
 
-
-
-
     //Seeds it. Do once
     srand (time(NULL));
 
     int aliveProb = 0;
 
+    total_population_ = 0;
+
     bool alive = false;
+    bool next_alive = false;
 
     //Colors of cells
     QColor red(Qt::red); //Alive
@@ -53,6 +53,7 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
             {
                 cell_color = red;
                 alive = true;
+                total_population_++;
             }
             //Dead cell...
             else
@@ -62,7 +63,7 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
             }
 
             //Create a new cell
-            Cell* newCell = new Cell(cell_color, j, i, alive);
+            Cell* newCell = new Cell(cell_color, j, i, alive, next_alive);
 
             //Add each new cell in row to remp_row
             temp_row.push_back(newCell);
