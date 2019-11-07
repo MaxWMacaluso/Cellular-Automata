@@ -13,7 +13,6 @@ using namespace std;
 
 class Grid
 {
-
 public:
     //Constructor, on creation, will go through board and randomely create alive and dead cells
     Grid(QGraphicsScene* scene, QGraphicsView* view);
@@ -25,9 +24,9 @@ public:
     //Takes input of current cell we are on in the map
     int checkAliveAround(Cell* current_cell);
 
-    vector<vector<Cell*>> getCellGrid(){return cell_grid_;}
+    vector<vector<Cell*>> getCellGrid() {return cell_grid_;}
 
-    int getPopulation(){return total_population_;}
+    int getPopulation() {return total_population_;}
 
     void setCellGrid(vector<vector<Cell*>> cell_grid) {cell_grid_ = cell_grid;} //Sets cell_grid_ equal to input paramater
 

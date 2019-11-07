@@ -8,7 +8,7 @@
 
 
 //Constructor, randomely creates a grib of alive and dead cells
-Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
+Grid::Grid(QGraphicsScene* scene, QGraphicsView* view)
 {
     //Seeds it. Do once
     srand (time(NULL));
@@ -64,9 +64,6 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
 
         //Once its gone through the whole row, add to final cell_grid_
         cell_grid_.push_back(temp_row);
-
-
-
     }
 
 
@@ -97,18 +94,18 @@ int Grid::checkAliveAround(Cell* current_cell)
     vec.push_back(down);
 
     //Look left
-    temp_column = column == 0 ? 19 : column-1;
+    temp_column = column == 0 ? 19 : column - 1;
     Cell* left = cell_grid_[row][temp_column];
     vec.push_back(left);
 
     //Look down left and up
-    temp_column = column == 0 ? 19 : column-1;
+    temp_column = column == 0 ? 19 : column - 1;
     temp_row = row == 0 ? 9: row-1;
     Cell* dLeftUp = cell_grid_[temp_row][ temp_column];
     vec.push_back(dLeftUp);
 
     //Look down right and up
-    temp_column = column == 19 ? 0 : column+1;
+    temp_column = column == 19 ? 0 : column + 1;
     temp_row = row == 0 ? 9 : row-1;
     Cell* dRightUp = cell_grid_[temp_row][ temp_column];
     vec.push_back(dRightUp);
@@ -140,8 +137,3 @@ int Grid::checkAliveAround(Cell* current_cell)
     return neighbor_alive;
 
 }
-
-//void Grid::setCellGrid(vector<vector<Cell*>> cg)
-//{
-//    cell_grid_ = cell_grid;
-//}

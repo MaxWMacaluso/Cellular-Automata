@@ -21,14 +21,19 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow(); //Deconstructor
     void TakeTurn();
+    void UpdateGraph();
+
+    //Helper function to make everything the user sees
+    void makeWindow();
 
 public slots:
-    void LeftClickSlot(Cell* c);
+    void LeftClickSlot(Cell* click);
 
 //PRIVATE VARIABLE
 private:
     Ui::MainWindow* ui;
-    QGraphicsScene* scene;
+    QGraphicsScene* scene_;
+    QGraphicsScene* scene2_;
 
     Grid g; //Makes an instance of the board with pointers scene and view
     int turn_;
@@ -43,9 +48,7 @@ private slots:
     void onStepButtonClicked();
     void onPlayButtonClicked();
     void onPauseButtonClicked();
-
-
-
+    void onResetButtonClicked();
 };
 
 #endif

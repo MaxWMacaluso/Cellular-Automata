@@ -14,8 +14,15 @@ public:
 
     int get_x() {return x_;}  //Returns x coordinate
     int get_y() {return y_;}  //Returns y coordinate
-    bool get_alive() {return alive_;}  //Returns alive
-    void setAlive(bool alive) {alive_ = alive;} //Sets state of cell
+
+    //Returns state of cell
+    bool get_alive() {return alive_;}
+    bool get_alive_next() {return next_alive_;}
+
+    //Sets state of cell
+    void setAlive(bool alive) {alive_ = alive;}
+    void setNextAlive(bool next_alive) {next_alive_ = next_alive;}
+
     void setColor(QColor color) {color_ = color;} //Sets color of cell
 
     //Need these functions
