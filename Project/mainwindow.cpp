@@ -36,6 +36,8 @@ void MainWindow::TakeTurn()
     //Each cell's alive neighbors
     int aliveNeighbors = 0;
 
+    int count= 0;
+    int add = 0;
     //Rows...
     for (int i = 0; i < 10; i++)
     {
@@ -52,10 +54,11 @@ void MainWindow::TakeTurn()
               //Kill it next turn
               if (aliveNeighbors < 2)
               {
+                //count++;
                 tmp->setNextAlive(false);
                 tmp->setColor(white);
                 to_update[i][j] = tmp;
-                currentPopulation_--;
+                //currentPopulation_--;
               }
               //Stays a live next turn
               if (aliveNeighbors ==2 || aliveNeighbors == 3)
@@ -68,7 +71,8 @@ void MainWindow::TakeTurn()
                   tmp->setNextAlive(false);
                   tmp->setColor(white);
                   to_update[i][j] = tmp;
-                  currentPopulation_--;
+                  //currentPopulation_--;
+                  //count ++;
               }
           }
           //If cell is dead...
@@ -80,7 +84,8 @@ void MainWindow::TakeTurn()
                   tmp->setNextAlive(true);
                   tmp->setColor(red);
                   to_update[i][j] = tmp;
-                  currentPopulation_++;
+                  //currentPopulation_++;
+                  //add ++;
               }
           }
         }
@@ -95,13 +100,17 @@ void MainWindow::TakeTurn()
         }
     }
 
+
+    //qDebug() << checkPopulation();
+    currentPopulation_ = checkPopulation();
+    makeBarChart();
     g.setCellGrid(to_update);
     ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_ * 100) / 200) + QString("%)"));
 
     //Call the updateGraph function
     UpdateGraph();
 
-    scene_->update();
+    cellScene_->update();
 }
 
 void MainWindow::UpdateGraph()
@@ -139,6 +148,48 @@ void MainWindow::onPauseButtonClicked()
     timer_->stop();
 }
 
+void MainWindow::makeBarChart(){
+
+    qDebug() << currentPopulation_;
+    QPen outlinePen(Qt::white);
+    if(bars_[19] != 0.0){
+        barScene_->clear();
+        barScene_->update();
+        for(int i = 0; i < 19; i++) {
+            bars_[i] = bars_[i+1];
+            barScene_->addRect(i*(bw_/20), (bh_)*(1-(bars_[i])), bw_/20 , bh_,outlinePen);
+        }
+        bars_[19] = currentPopulation_/200.0;
+        barScene_->addRect(19*(bw_/20), (bh_)*(1-(bars_[19])), bw_/20 , bh_);
+        return;
+    }
+
+    for(int i = 0; i < 20; i++) {
+        if(bars_[i] == 0.0) {
+            bars_[i] = currentPopulation_/200.0;
+            barScene_->addRect(i*(bw_/20), (bh_)*(1-(bars_[i])), bw_/20 , bh_,outlinePen);
+            return;
+        }
+    }
+}
+
+int MainWindow::checkPopulation()
+{
+    vector<vector<Cell *>> tmp = g.getCellGrid();
+    int count = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            Cell * c = tmp[i][j];
+            if (c->get_alive() == true){
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
 void MainWindow::LeftClickSlot(Cell* click)
 {
     //int count = 0;
@@ -151,7 +202,7 @@ void MainWindow::LeftClickSlot(Cell* click)
 void MainWindow::onResetButtonClicked()
 {
     //First clear the board and stop the timer
-    scene_->clear();
+    cellScene_->clear();
     timer_->stop();
 
     //Call the makeWindow function
@@ -163,19 +214,34 @@ void MainWindow::makeWindow()
     //Need to set up the ui before we draw on our scene
     ui->setupUi(this);
 
-    //SCENE 1 (Cell grid)
-    scene_ = new QGraphicsScene; //Scene is everything inside of the window
-    QGraphicsView* view = ui->cellView; //view is the whole window
-    view->setScene(scene_);
-    view->setSceneRect(0, 0, view->frameSize().width() - 20, view->frameSize().height() - 20);
-
-    //SCENE 2 (Bar graph)
-//    scene2 = new QGraphicsScene;
-//    view->setScene(scene2);
-//    view->setSceneRect(0, 0, view->frameSize().width() - 20, view->frameSize().height() - 20);
+    //for CELLS scene
+    cellScene_ = new QGraphicsScene;
+    QGraphicsView* cellView = ui->cellView;
+    cellView->setScene(cellScene_);
+    cellView->setSceneRect(0,0,cellView->frameSize().width()-20,cellView->frameSize().height()-20);
 
 
-    g = Grid(scene_, view);
+    //for BAR GRAPH
+    barScene_ = new QGraphicsScene;
+    QGraphicsView* barView = ui->graphCell;
+    barView->setScene(barScene_);
+    int barHeight_ = barView->frameSize().height() - 20;
+    int barWidth_ = barView->frameSize().width() - 20;
+    bh_ = barHeight_;
+    bw_ = barWidth_;
+    barView->setSceneRect(0,0,barWidth_,barHeight_);
+    //initialize the bar array to zero
+    for (int i = 0 ; i < 20;i++){
+        bars_[i]=0.0;
+    }
+
+
+
+
+    g = Grid(cellScene_, cellView);
+    currentPopulation_ = g.getPopulation();
+    makeBarChart();
+
 
     //connect left click feature to all cells ???********NEEDS TO CHANGE to correct LC feature ************
     vector<vector<Cell*>>  tmp = g.getCellGrid();
@@ -191,22 +257,23 @@ void MainWindow::makeWindow()
     connect(ui->StepButton, &QAbstractButton::clicked, this, &MainWindow::onStepButtonClicked);
     connect(ui->PlayButton, &QAbstractButton::clicked, this, &MainWindow::onPlayButtonClicked);
     connect(ui->PauseButton, &QAbstractButton::clicked, this, &MainWindow::onPauseButtonClicked);
-    connect(ui->ResetButton, &QAbstractButton::clicked, this, &MainWindow::onResetButtonClicked);
+    //connect(ui->ResetButton, &QAbstractButton::clicked, this, &MainWindow::onResetButtonClicked);
     connect(ui->SpeedSlider, &QSlider::valueChanged, this, &MainWindow::onSpeedSliderSliderMoved);
 
-
+    //update labels
     ui->TurnLabel->setText(QString("Turn: 0"));
-    currentPopulation_ = g.getPopulation();
+
     ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_*100)/200) + QString("%)"));
 
+
+    //for play button..
     srand(time(0));
     speed_ = 1.0;
     timer_ = new QTimer;
-
     connect(timer_, SIGNAL(timeout()), this, SLOT(onPlayButtonClicked()));
 
     //Will update the baord
-    scene_->update();
+    cellScene_->update();
 }
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)

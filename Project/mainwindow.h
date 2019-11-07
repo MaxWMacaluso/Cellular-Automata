@@ -23,6 +23,8 @@ public:
     void TakeTurn();
     void UpdateGraph();
 
+    void makeBarChart();
+    int checkPopulation();
     //Helper function to make everything the user sees
     void makeWindow();
 
@@ -32,14 +34,18 @@ public slots:
 //PRIVATE VARIABLE
 private:
     Ui::MainWindow* ui;
-    QGraphicsScene* scene_;
-    QGraphicsScene* scene2_;
+    QGraphicsScene* cellScene_;
+    QGraphicsScene* barScene_;
+
 
     Grid g; //Makes an instance of the board with pointers scene and view
     int turn_;
     int currentPopulation_;
     QTimer* timer_;
     double speed_;
+    double bars_[20];
+    int bh_;
+    int bw_;
 
 //SLOTS
 private slots:
