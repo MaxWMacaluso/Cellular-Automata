@@ -17,19 +17,18 @@ Cell::Cell(QColor color, int x, int y, bool alive, bool next_alive)
   alive_ = alive; //Initializes it to a
 
   next_alive_ = next_alive;
-
 }
 
-void Cell::setAlive(bool a)
-{
-    alive_ = a;
+//void Cell::setAlive(bool alive)
+//{
+//    alive_ = alive;
 
-}
+//}
 
-void Cell::setColor(QColor c)
-{
-    color_ = c;
-}
+//void Cell::setColor(QColor color)
+//{
+//    color_ = color;
+//}
 
 //Defines clickable area
 QRectF Cell::boundingRect() const
@@ -69,9 +68,10 @@ void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
     painter->setBrush(b);
 }
 
-void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if(event->buttons() == Qt::LeftButton){
+    if (event->buttons() == Qt::LeftButton)
+    {
         emit LeftClick(this);
     }
 

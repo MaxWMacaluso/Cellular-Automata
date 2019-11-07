@@ -21,16 +21,18 @@ public:
     //Defualt constructor
     Grid() {}
 
-    //Alters the cell_grid 2D vector with the new values for the cells after applying the supplied algo
+    //Alters the cell_grid_ 2D vector with the new values for the cells after applying the given algo
     //Takes input of current cell we are on in the map
     int checkAliveAround(Cell* current_cell);
-    vector<vector<Cell*>> getCellGrid(){return cell_grid;}
+
+    vector<vector<Cell*>> getCellGrid(){return cell_grid_;}
+
     int getPopulation(){return total_population_;}
 
-    void setCellGrid(vector<vector<Cell*>> cg);
+    void setCellGrid(vector<vector<Cell*>> cell_grid) {cell_grid_ = cell_grid;} //Sets cell_grid_ equal to input paramater
 
 private:
-    vector<vector<Cell*>> cell_grid; //Is a 2D vector that will contain pointers of all the cells in the game
+    vector<vector<Cell*>> cell_grid_; //Is a 2D vector that will contain pointers of all the cells in the game
     int total_population_; //Holds the total population of the board
 };
 

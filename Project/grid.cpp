@@ -62,8 +62,8 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
         }
 
 
-        //Once its gone through the whole row, add to final cell_grid
-        cell_grid.push_back(temp_row);
+        //Once its gone through the whole row, add to final cell_grid_
+        cell_grid_.push_back(temp_row);
 
 
 
@@ -75,60 +75,73 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
 int Grid::checkAliveAround(Cell* current_cell)
 {
     int neighbor_alive = 0;
+
     int column = current_cell->get_x()/ 36;
     int row = current_cell->get_y()/ 30;
-    vector<Cell *> vec;
+
+    vector<Cell*> vec;
 
     //look up
     int temp_row = (row == 0 ? 9 : row-1);
-    Cell * up = cell_grid[temp_row][column];
+    Cell* up = cell_grid_[temp_row][column];
     vec.push_back(up);
 
+    //Look right
     int temp_column = (column == 19 ? 0 : column+1);
-    Cell * right = cell_grid[row][temp_column];
+    Cell* right = cell_grid_[row][temp_column];
     vec.push_back(right);
 
-
+    //Look down
     temp_row = (row == 9 ? 0 : row+1);
-    Cell * down = cell_grid[temp_row][column];
+    Cell* down = cell_grid_[temp_row][column];
     vec.push_back(down);
 
+    //Look left
     temp_column = column == 0 ? 19 : column-1;
-    Cell * left = cell_grid[row][temp_column];
+    Cell* left = cell_grid_[row][temp_column];
     vec.push_back(left);
 
+    //Look down left and up
     temp_column = column == 0 ? 19 : column-1;
     temp_row = row == 0 ? 9: row-1;
-    Cell * dLeftUp = cell_grid[temp_row][ temp_column];
+    Cell* dLeftUp = cell_grid_[temp_row][ temp_column];
     vec.push_back(dLeftUp);
 
+    //Look down right and up
     temp_column = column == 19 ? 0 : column+1;
     temp_row = row == 0 ? 9 : row-1;
-    Cell * dRightUp = cell_grid[temp_row][ temp_column];
+    Cell* dRightUp = cell_grid_[temp_row][ temp_column];
     vec.push_back(dRightUp);
 
+    //Look down left and down
     temp_column= column == 0 ? 19 : column-1;
     temp_row = row == 9 ? 0 : row+1;
-    Cell * dLeftDown = cell_grid[temp_row][ temp_column];
+    Cell* dLeftDown = cell_grid_[temp_row][ temp_column];
     vec.push_back(dLeftDown);
 
+    //Look down right and down
     temp_column = column == 19 ? 0 : column+1;
     temp_row = row == 9 ? 0 : row+1;
-    Cell * dRightDown = cell_grid[temp_row][ temp_column];
+    Cell* dRightDown = cell_grid_[temp_row][ temp_column];
     vec.push_back(dRightDown);
 
 
-    for (int i =0;i<8; i++){
-        Cell * tmp = vec[i];
-        if (tmp->get_alive() == true){
-            neighbor_alive ++;
+    //Vector of all neighbor cells
+    for (int i = 0; i < vec.size(); i++)
+    {
+        Cell* tmp = vec[i];
+
+        if (tmp->get_alive() == true)
+        {
+            neighbor_alive++;
         }
     }
+
     return neighbor_alive;
 
 }
 
-void Grid::setCellGrid(vector<vector<Cell *>> cg)
-{
-    cell_grid = cg;
-}
+//void Grid::setCellGrid(vector<vector<Cell*>> cg)
+//{
+//    cell_grid_ = cell_grid;
+//}

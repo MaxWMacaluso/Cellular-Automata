@@ -15,8 +15,8 @@ public:
     int get_x() {return x_;}  //Returns x coordinate
     int get_y() {return y_;}  //Returns y coordinate
     bool get_alive() {return alive_;}  //Returns alive
-    void setAlive(bool a);
-    void setColor(QColor c);
+    void setAlive(bool alive) {alive_ = alive;} //Sets state of cell
+    void setColor(QColor color) {color_ = color;} //Sets color of cell
 
     //Need these functions
     QRectF boundingRect() const override;
@@ -42,11 +42,11 @@ private:
 
   QColor color_; //Color of cell
 
-  static const int size_ = 20; //Width of cell
+  static const int size_ = 20; //Size of cell
 
-  bool alive_; //Dead or alive
+  bool alive_; //Current state (Dead or alive)
 
-  bool next_alive_;
+  bool next_alive_; //State next turn
 };
 
 #endif

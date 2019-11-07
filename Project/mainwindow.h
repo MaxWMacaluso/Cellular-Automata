@@ -23,7 +23,7 @@ public:
     void TakeTurn();
 
 public slots:
-    void LeftClickSlot(Cell * c);
+    void LeftClickSlot(Cell* c);
 
 //PRIVATE VARIABLE
 private:
@@ -33,7 +33,7 @@ private:
     Grid g; //Makes an instance of the board with pointers scene and view
     int turn_;
     int currentPopulation_;
-    QTimer *timer_;
+    QTimer* timer_;
     double speed_;
 
 //SLOTS
@@ -47,6 +47,5 @@ private slots:
 
 
 };
-
 
 #endif

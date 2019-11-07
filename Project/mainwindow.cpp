@@ -18,7 +18,8 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::TakeTurn(){
+void MainWindow::TakeTurn()
+{
 
     //Colors of cells
     QColor red(Qt::red); //Alive
