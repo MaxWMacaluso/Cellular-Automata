@@ -20,8 +20,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow(); //Deconstructor
+    void TakeTurn();
 
-public:
+public slots:
+    void LeftClickSlot(Cell * c);
 
 //PRIVATE VARIABLE
 private:
@@ -29,6 +31,10 @@ private:
     QGraphicsScene* scene;
 
     Grid g; //Makes an instance of the board with pointers scene and view
+    int turn_;
+    int currentPopulation_;
+    QTimer *timer_;
+    double speed_;
 
 //SLOTS
 private slots:
@@ -37,6 +43,8 @@ private slots:
     void onStepButtonClicked();
     void onPlayButtonClicked();
     void onPauseButtonClicked();
+
+
 
 };
 

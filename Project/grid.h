@@ -23,7 +23,11 @@ public:
 
     //Alters the cell_grid 2D vector with the new values for the cells after applying the supplied algo
     //Takes input of current cell we are on in the map
-    void next_turn(Cell* current_cell);
+    int checkAliveAround(Cell* current_cell);
+    vector<vector<Cell*>> getCellGrid(){return cell_grid;}
+    int getPopulation(){return total_population_;}
+
+    void setCellGrid(vector<vector<Cell*>> cg);
 
 private:
     vector<vector<Cell*>> cell_grid; //Is a 2D vector that will contain pointers of all the cells in the game

@@ -10,14 +10,19 @@ class Cell : public QObject, public QGraphicsItem
     Q_OBJECT
 
 public:
-    Cell(QColor color, const int x, const int y, bool alive, bool next_alive);  //Constructor
+    Cell(QColor color, int x, int y, bool alive, bool next_alive);  //Constructor
 
-    int get_x() const {return x_;}  //Returns x coordinate
-    int get_y() const {return y_;}  //Returns y coordinate
+    int get_x() {return x_;}  //Returns x coordinate
+    int get_y() {return y_;}  //Returns y coordinate
+    bool get_alive() {return alive_;}  //Returns alive
+    void setAlive(bool a);
+    void setColor(QColor c);
 
     //Need these functions
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget) override; //Changes color of the cell
 
@@ -25,7 +30,7 @@ public:
 
 signals:
 //    void RightClick(Cell* c);
-//    void LeftClick(Cell* c);
+    void LeftClick(Cell* c);
 
 protected:
 

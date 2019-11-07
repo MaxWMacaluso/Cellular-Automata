@@ -7,7 +7,7 @@
 #include <QtWidgets>
 
 //CONSTRUCTOR
-Cell::Cell(QColor color, const int x, const int y, bool alive, bool next_alive)
+Cell::Cell(QColor color, int x, int y, bool alive, bool next_alive)
 {
   this->color_ = color; //Sets the color
 
@@ -18,6 +18,17 @@ Cell::Cell(QColor color, const int x, const int y, bool alive, bool next_alive)
 
   next_alive_ = next_alive;
 
+}
+
+void Cell::setAlive(bool a)
+{
+    alive_ = a;
+
+}
+
+void Cell::setColor(QColor c)
+{
+    color_ = c;
 }
 
 //Defines clickable area
@@ -56,4 +67,12 @@ void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
     }
     painter->drawRect(QRect(this->x_, this->y_, this->size_, this->size_));
     painter->setBrush(b);
+}
+
+void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(event->buttons() == Qt::LeftButton){
+        emit LeftClick(this);
+    }
+
 }

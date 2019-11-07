@@ -2,25 +2,14 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <qDebug>
+#include <QString>
 
 
 
 //Constructor, randomely creates a grib of alive and dead cells
 Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
 {
-    //Creates a grid
-    int cellHeight = view->frameSize().height() - 20;
-    int cellWidth = view->frameSize().width() - 20;
-    for (int i = 0; i < view->frameSize().width(); i += (cellWidth / 20))
-    {
-            scene->addLine(i, 0, i, cellHeight);
-    }
-
-    for (int i = 0; i < view->frameSize().height(); i += (cellHeight / 10))
-    {
-            scene->addLine(0, i, cellWidth, i);
-    }
-
     //Seeds it. Do once
     srand (time(NULL));
 
@@ -38,14 +27,16 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
     //Will be the color of the cell I create
     QColor cell_color;
 
-    vector<Cell*> temp_row;
+
 
     //Traverses row
     for (int i = 0; i < 10; i++)
     {
         //Height
+        vector<Cell*> temp_row;
         for (int j = 0; j < 20; j++)
         {
+
             aliveProb = rand() % 10; //Random number [0, 10]
 
             //Alive cell...
@@ -67,90 +58,77 @@ Grid::Grid(QGraphicsScene *scene, QGraphicsView *view)
 
             //Add each new cell in row to remp_row
             temp_row.push_back(newCell);
-
             scene->addItem(newCell);
         }
 
+
         //Once its gone through the whole row, add to final cell_grid
         cell_grid.push_back(temp_row);
+
+
+
     }
+
+
 }
 
-void Grid::next_turn(Cell* current_cell)
+int Grid::checkAliveAround(Cell* current_cell)
 {
-    int neighbor = 0;
+    int neighbor_alive = 0;
+    int column = current_cell->get_x()/ 36;
+    int row = current_cell->get_y()/ 30;
+    vector<Cell *> vec;
 
-    //Traverses row
-    for (int i = 0; i < 10; i++)
-    {
-        //Height
-        for (int j = 0; j < 20; j++)
-        {
-            //Top row special case
-            if (i == 0)
-            {
+    //look up
+    int temp_row = (row == 0 ? 9 : row-1);
+    Cell * up = cell_grid[temp_row][column];
+    vec.push_back(up);
 
-            }
+    int temp_column = (column == 19 ? 0 : column+1);
+    Cell * right = cell_grid[row][temp_column];
+    vec.push_back(right);
 
-            //Bottom row special case
-            else if (i == 9)
-            {
 
-            }
+    temp_row = (row == 9 ? 0 : row+1);
+    Cell * down = cell_grid[temp_row][column];
+    vec.push_back(down);
 
-            //Left column special case
-            else if (j == 0)
-            {
+    temp_column = column == 0 ? 19 : column-1;
+    Cell * left = cell_grid[row][temp_column];
+    vec.push_back(left);
 
-            }
+    temp_column = column == 0 ? 19 : column-1;
+    temp_row = row == 0 ? 9: row-1;
+    Cell * dLeftUp = cell_grid[temp_row][ temp_column];
+    vec.push_back(dLeftUp);
 
-            //Right column special case
-            else if (j == 19)
-            {
+    temp_column = column == 19 ? 0 : column+1;
+    temp_row = row == 0 ? 9 : row-1;
+    Cell * dRightUp = cell_grid[temp_row][ temp_column];
+    vec.push_back(dRightUp);
 
-            }
+    temp_column= column == 0 ? 19 : column-1;
+    temp_row = row == 9 ? 0 : row+1;
+    Cell * dLeftDown = cell_grid[temp_row][ temp_column];
+    vec.push_back(dLeftDown);
 
-            //Normal case, not on edges
-            else
-            {
-//                //Check neighbors
-//                if (cell_grid[i + 1][j] != NULL)
-//                {
-//                    //If alive, add TODO add conditional
-//                    if (cell_grid[i + 1][j]->alive_ == true)
-//                    {
-//                        neighbor++;
-//                    }
-//                }
-//                if (cell_grid[i - 1][j] != NULL)
-//                {
-//                    neighbor++;
-//                }
-//                if (cell_grid[i][j + 1] != NULL)
-//                {
-//                    neighbor++;
-//                }
-//                if (cell_grid[i][j - 1] != NULL)
-//                {
-//                    neighbor++;
-//                }
-//                if (cell_grid[i - 1][j - 1] != NULL)
-//                {
-//                    neighbor++;
-//                }
-//                if (cell_grid[i + 1][j + 1] != NULL)
-//                {
-//                    neighbor++;
-//                }
-//                if (cell_grid[i - 1][j + 1] != NULL)
-//                {
-//                    neighbor++;
-//                }
-//                if (cell_grid[i + 1][j - 1] != NULL)
-//                {
-//                    neighbor++;
-//                }
-            }
+    temp_column = column == 19 ? 0 : column+1;
+    temp_row = row == 9 ? 0 : row+1;
+    Cell * dRightDown = cell_grid[temp_row][ temp_column];
+    vec.push_back(dRightDown);
+
+
+    for (int i =0;i<8; i++){
+        Cell * tmp = vec[i];
+        if (tmp->get_alive() == true){
+            neighbor_alive ++;
         }
     }
+    return neighbor_alive;
+
+}
+
+void Grid::setCellGrid(vector<vector<Cell *>> cg)
+{
+    cell_grid = cg;
 }
