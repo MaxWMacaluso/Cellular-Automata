@@ -148,26 +148,34 @@ void MainWindow::onPauseButtonClicked()
     timer_->stop();
 }
 
-void MainWindow::makeBarChart(){
+void MainWindow::makeBarChart()
+{
 
     qDebug() << currentPopulation_;
     QPen outlinePen(Qt::white);
-    if(bars_[19] != 0.0){
+
+    if (bars_[19] != 0.0)
+    {
         barScene_->clear();
         barScene_->update();
-        for(int i = 0; i < 19; i++) {
+        for (int i = 0; i < 19; i++)
+        {
             bars_[i] = bars_[i+1];
             barScene_->addRect(i*(bw_/20), (bh_)*(1-(bars_[i])), bw_/20 , bh_,outlinePen);
         }
         bars_[19] = currentPopulation_/200.0;
         barScene_->addRect(19*(bw_/20), (bh_)*(1-(bars_[19])), bw_/20 , bh_);
+
         return;
     }
 
-    for(int i = 0; i < 20; i++) {
-        if(bars_[i] == 0.0) {
-            bars_[i] = currentPopulation_/200.0;
-            barScene_->addRect(i*(bw_/20), (bh_)*(1-(bars_[i])), bw_/20 , bh_,outlinePen);
+    for (int i = 0; i < 20; i++)
+    {
+        if (bars_[i] == 0.0)
+        {
+            bars_[i] = currentPopulation_ / 200.0;
+            barScene_->addRect(i * (bw_ / 20), (bh_) * (1-(bars_[i])), bw_ / 20 , bh_,outlinePen);
+
             return;
         }
     }
@@ -181,12 +189,14 @@ int MainWindow::checkPopulation()
     {
         for (int j = 0; j < 20; j++)
         {
-            Cell * c = tmp[i][j];
-            if (c->get_alive() == true){
+            Cell* c = tmp[i][j];
+            if (c->get_alive() == true)
+            {
                 count++;
             }
         }
     }
+
     return count;
 }
 
@@ -201,14 +211,16 @@ void MainWindow::LeftClickSlot(Cell* click)
 
 void MainWindow::onResetButtonClicked()
 {
-    //First clear the board and stop the timer
+    //First clear the board and stop the timer then set turns to 0
     cellScene_->clear();
     timer_->stop();
+    turn_ = 0;
 
     //Call the makeWindow function
     makeWindow();
 }
 
+//Makes the whole window
 void MainWindow::makeWindow()
 {
     //Need to set up the ui before we draw on our scene
@@ -230,8 +242,10 @@ void MainWindow::makeWindow()
     bh_ = barHeight_;
     bw_ = barWidth_;
     barView->setSceneRect(0,0,barWidth_,barHeight_);
+
     //initialize the bar array to zero
-    for (int i = 0 ; i < 20;i++){
+    for (int i = 0 ; i < 20;i++)
+    {
         bars_[i]=0.0;
     }
 
@@ -257,7 +271,7 @@ void MainWindow::makeWindow()
     connect(ui->StepButton, &QAbstractButton::clicked, this, &MainWindow::onStepButtonClicked);
     connect(ui->PlayButton, &QAbstractButton::clicked, this, &MainWindow::onPlayButtonClicked);
     connect(ui->PauseButton, &QAbstractButton::clicked, this, &MainWindow::onPauseButtonClicked);
-    //connect(ui->ResetButton, &QAbstractButton::clicked, this, &MainWindow::onResetButtonClicked);
+    connect(ui->ResetButton, &QAbstractButton::clicked, this, &MainWindow::onResetButtonClicked);
     connect(ui->SpeedSlider, &QSlider::valueChanged, this, &MainWindow::onSpeedSliderSliderMoved);
 
     //update labels
@@ -276,7 +290,9 @@ void MainWindow::makeWindow()
     cellScene_->update();
 }
 
+//Constructor
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    turn_ = 0;
     makeWindow();
 }
