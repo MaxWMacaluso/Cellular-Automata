@@ -56,11 +56,9 @@ void MainWindow::TakeTurn()
                   //Kill it next turn
                   if (aliveNeighbors < 2)
                   {
-                    //count++;
                     tmp->setNextAlive(false);
                     tmp->setColor(white);
                     to_update[i][j] = tmp;
-                    //currentPopulation_--;
                   }
                   //Stays a live next turn
                   if (aliveNeighbors ==2 || aliveNeighbors == 3)
@@ -73,8 +71,6 @@ void MainWindow::TakeTurn()
                       tmp->setNextAlive(false);
                       tmp->setColor(white);
                       to_update[i][j] = tmp;
-                      //currentPopulation_--;
-                      //count ++;
                   }
               }
               //If cell is dead...
@@ -86,8 +82,6 @@ void MainWindow::TakeTurn()
                       tmp->setNextAlive(true);
                       tmp->setColor(red);
                       to_update[i][j] = tmp;
-                      //currentPopulation_++;
-                      //add ++;
                   }
               }
             }
@@ -109,34 +103,21 @@ void MainWindow::TakeTurn()
         g.setCellGrid(to_update);
         ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_ * 100) / 200) + QString("%)"));
 
-        //Call the updateGraph function
-        UpdateGraph();
-
         cellScene_->update();
     }
 }
 
-void MainWindow::UpdateGraph()
-{
-
-}
-
-void MainWindow::onPushButtonClicked()
-{
-
-}
-
 void MainWindow::onSpeedSliderSliderMoved(int position)
 {
-        qDebug() << "Slider Moved";
+        //qDebug() << "Slider Moved";
         speed_ = 1-(position / 100.0);
         ui->SpeeLabel->setText(QString("Speed: ") + QString::number(speed_, 'f', 6));
-        qDebug() << speed_;
+        //qDebug() << speed_;
 }
 
 void MainWindow::onStepButtonClicked()
 {
-    qDebug() << "step pressed!";
+    //qDebug() << "step pressed!";
     TakeTurn();
 }
 
@@ -154,7 +135,7 @@ void MainWindow::onPauseButtonClicked()
 void MainWindow::makeBarChart()
 {
 
-    qDebug() << currentPopulation_;
+    //qDebug() << currentPopulation_;
     QPen outlinePen(Qt::white);
 
     if (bars_[19] != 0.0)
@@ -205,7 +186,7 @@ int MainWindow::checkPopulation()
 
 void MainWindow::LeftClickSlot(Cell* click)
 {
-    qDebug() << "LEFT CLICK !";
+    //qDebug() << "LEFT CLICK !";
 
     click->setAlive(true);
     cellScene_->update();
@@ -215,7 +196,7 @@ void MainWindow::LeftClickSlot(Cell* click)
 
 void MainWindow::RightClickSlot(Cell *click)
 {
-    qDebug() << "RIGHT CLICK !";
+    //qDebug() << "RIGHT CLICK !";
     click->setAlive(false);
     cellScene_->update();
     currentPopulation_ =  checkPopulation();

@@ -20,19 +20,18 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow(); //Deconstructor
-    void TakeTurn();
-    void UpdateGraph();
 
-    void makeBarChart();
-    int checkPopulation();
-    //Helper function to make everything the user sees
-    void makeWindow();
+    void TakeTurn(); //Changes state of grid and bar chart after each turn
+    void makeBarChart(); //Makes the bar chart
+    int checkPopulation(); //Sums the total pop
+    void makeWindow(); //Helper function to make everything the user sees
 
+//Left and right click
 public slots:
     void LeftClickSlot(Cell* click);
     void RightClickSlot(Cell * click);
 
-//PRIVATE VARIABLE
+//Different components
 private:
     Ui::MainWindow* ui;
     QGraphicsScene* cellScene_;
@@ -40,7 +39,7 @@ private:
 
 
     Grid g; //Makes an instance of the board with pointers scene and view
-    int turn_;
+    int turn_; //Turn we are on
     int max_turn_; //Input entered field which determines the number of max turns
     int currentPopulation_;
     QTimer* timer_;
@@ -51,7 +50,6 @@ private:
 
 //SLOTS
 private slots:
-    void onPushButtonClicked();
     void onSpeedSliderSliderMoved(int position);
     void onStepButtonClicked();
     void onPlayButtonClicked();

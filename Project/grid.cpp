@@ -32,7 +32,7 @@ Grid::Grid(QGraphicsScene* scene, QGraphicsView* view)
     //Traverses row
     for (int i = 0; i < 10; i++)
     {
-        //Height
+        //Column
         vector<Cell*> temp_row;
         for (int j = 0; j < 20; j++)
         {
@@ -79,17 +79,17 @@ int Grid::checkAliveAround(Cell* current_cell)
     vector<Cell*> vec;
 
     //look up
-    int temp_row = (row == 0 ? 9 : row-1);
+    int temp_row = (row == 0 ? 9 : row - 1);
     Cell* up = cell_grid_[temp_row][column];
     vec.push_back(up);
 
     //Look right
-    int temp_column = (column == 19 ? 0 : column+1);
+    int temp_column = (column == 19 ? 0 : column + 1);
     Cell* right = cell_grid_[row][temp_column];
     vec.push_back(right);
 
     //Look down
-    temp_row = (row == 9 ? 0 : row+1);
+    temp_row = (row == 9 ? 0 : row + 1);
     Cell* down = cell_grid_[temp_row][column];
     vec.push_back(down);
 
@@ -98,27 +98,27 @@ int Grid::checkAliveAround(Cell* current_cell)
     Cell* left = cell_grid_[row][temp_column];
     vec.push_back(left);
 
-    //Look down left and up
+    //Look diagonal left and up
     temp_column = column == 0 ? 19 : column - 1;
-    temp_row = row == 0 ? 9: row-1;
+    temp_row = row == 0 ? 9: row - 1;
     Cell* dLeftUp = cell_grid_[temp_row][ temp_column];
     vec.push_back(dLeftUp);
 
-    //Look down right and up
+    //Look diagonal right and up
     temp_column = column == 19 ? 0 : column + 1;
-    temp_row = row == 0 ? 9 : row-1;
+    temp_row = row == 0 ? 9 : row - 1;
     Cell* dRightUp = cell_grid_[temp_row][ temp_column];
     vec.push_back(dRightUp);
 
-    //Look down left and down
-    temp_column= column == 0 ? 19 : column-1;
-    temp_row = row == 9 ? 0 : row+1;
+    //Look diagonal left and down
+    temp_column= column == 0 ? 19 : column - 1;
+    temp_row = row == 9 ? 0 : row + 1;
     Cell* dLeftDown = cell_grid_[temp_row][ temp_column];
     vec.push_back(dLeftDown);
 
-    //Look down right and down
-    temp_column = column == 19 ? 0 : column+1;
-    temp_row = row == 9 ? 0 : row+1;
+    //Look diagonal right and down
+    temp_column = column == 19 ? 0 : column + 1;
+    temp_row = row == 9 ? 0 : row + 1;
     Cell* dRightDown = cell_grid_[temp_row][ temp_column];
     vec.push_back(dRightDown);
 
@@ -128,12 +128,15 @@ int Grid::checkAliveAround(Cell* current_cell)
     {
         Cell* tmp = vec[i];
 
+        //If neighbors are alive...
         if (tmp->get_alive() == true)
         {
+            //Increment count of alive neighbors
             neighbor_alive++;
         }
     }
 
+    //Return total amount of live neighbors for each cell
     return neighbor_alive;
 
 }

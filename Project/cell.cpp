@@ -19,17 +19,6 @@ Cell::Cell(QColor color, int x, int y, bool alive, bool next_alive)
   next_alive_ = next_alive;
 }
 
-//void Cell::setAlive(bool alive)
-//{
-//    alive_ = alive;
-
-//}
-
-//void Cell::setColor(QColor color)
-//{
-//    color_ = color;
-//}
-
 //Defines clickable area
 QRectF Cell::boundingRect() const
 {
@@ -45,7 +34,7 @@ QPainterPath Cell::shape() const
 }
 
 
-//CHANGE COLOR
+//Changes the color of the cell
 //If alive... have a color
 //If dead... be white
 void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -64,10 +53,13 @@ void Cell::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
     {
         painter->setBrush(QBrush(Qt::white));
     }
+
+    //Applies conditionals of above
     painter->drawRect(QRect(this->x_, this->y_, this->size_, this->size_));
     painter->setBrush(b);
 }
 
+//Left click and right click
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->buttons() == Qt::LeftButton)

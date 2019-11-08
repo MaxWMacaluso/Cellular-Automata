@@ -22,13 +22,11 @@ public:
     //Sets state of cell
     void setAlive(bool alive) {alive_ = alive;}
     void setNextAlive(bool next_alive) {next_alive_ = next_alive;}
-
     void setColor(QColor color) {color_ = color;} //Sets color of cell
 
     //Need these functions
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* item, QWidget* widget) override; //Changes color of the cell
