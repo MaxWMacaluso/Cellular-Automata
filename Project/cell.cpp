@@ -74,5 +74,9 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
         emit LeftClick(this);
     }
+    if (event->buttons() == Qt::RightButton)
+    {
+        emit RightClick(this);
+    }
 
 }

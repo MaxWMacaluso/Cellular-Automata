@@ -205,11 +205,21 @@ int MainWindow::checkPopulation()
 
 void MainWindow::LeftClickSlot(Cell* click)
 {
-    //int count = 0;
-    //g.checkAliveAround(c);
-    qDebug() << "alive around" << g.checkAliveAround(click);
-    //count++;
-    //qDebug() << count;
+    qDebug() << "LEFT CLICK !";
+
+    click->setAlive(true);
+    cellScene_->update();
+    currentPopulation_ =  checkPopulation();
+    ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_ * 100) / 200) + QString("%)"));
+}
+
+void MainWindow::RightClickSlot(Cell *click)
+{
+    qDebug() << "RIGHT CLICK !";
+    click->setAlive(false);
+    cellScene_->update();
+    currentPopulation_ =  checkPopulation();
+    ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_ * 100) / 200) + QString("%)"));
 }
 
 void MainWindow::onResetButtonClicked()
@@ -277,6 +287,7 @@ void MainWindow::makeWindow()
         for (Cell* c : v)
         {
             connect(c, &Cell::LeftClick, this, &MainWindow::LeftClickSlot);
+            connect(c, &Cell::RightClick, this, &MainWindow::RightClickSlot);
         }
     }
 

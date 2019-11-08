@@ -30,6 +30,7 @@ public:
 
 public slots:
     void LeftClickSlot(Cell* click);
+    void RightClickSlot(Cell * click);
 
 //PRIVATE VARIABLE
 private:

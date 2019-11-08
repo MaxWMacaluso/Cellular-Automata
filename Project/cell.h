@@ -36,7 +36,7 @@ public:
     static int get_size() {return size_;} //Returns the width of the cell
 
 signals:
-//    void RightClick(Cell* c);
+    void RightClick(Cell* c);
     void LeftClick(Cell* c);
 
 protected:
