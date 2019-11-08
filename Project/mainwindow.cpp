@@ -20,97 +20,100 @@ MainWindow::~MainWindow()
 
 void MainWindow::TakeTurn()
 {
-
-    //Colors of cells
-    QColor red(Qt::red); //Alive
-    QColor white(Qt::white); //Dead
-
-    turn_++; //Add one to the value of turn
-
-    //Update label
-    ui->TurnLabel->setText(QString("Turn: ") + QString::number(turn_));
-
-    //Will be a 2D vector which will be the next turn
-    vector<vector<Cell*>> to_update = g.getCellGrid();
-
-    //Each cell's alive neighbors
-    int aliveNeighbors = 0;
-
-    int count= 0;
-    int add = 0;
-    //Rows...
-    for (int i = 0; i < 10; i++)
+    //Only do if current turn is < max turn defined by user
+    if (turn_ < max_turn_)
     {
-        //Columns...
-        for (int j = 0; j < 20; j++)
+        //Colors of cells
+        QColor red(Qt::red); //Alive
+        QColor white(Qt::white); //Dead
+
+        turn_++; //Add one to the value of turn
+
+        //Update label
+        ui->TurnLabel->setText(QString("Turn: ") + QString::number(turn_));
+
+        //Will be a 2D vector which will be the next turn
+        vector<vector<Cell*>> to_update = g.getCellGrid();
+
+        //Each cell's alive neighbors
+        int aliveNeighbors = 0;
+
+        int count= 0;
+        int add = 0;
+        //Rows...
+        for (int i = 0; i < 10; i++)
         {
-          //Cell is equal to the current cell we are on in cell grid
-          Cell* tmp = to_update[i][j];
-          aliveNeighbors = g.checkAliveAround(tmp);
+            //Columns...
+            for (int j = 0; j < 20; j++)
+            {
+              //Cell is equal to the current cell we are on in cell grid
+              Cell* tmp = to_update[i][j];
+              aliveNeighbors = g.checkAliveAround(tmp);
 
-          //If cell is alive...
-          if (tmp->get_alive() == true)
-          {
-              //Kill it next turn
-              if (aliveNeighbors < 2)
+              //If cell is alive...
+              if (tmp->get_alive() == true)
               {
-                //count++;
-                tmp->setNextAlive(false);
-                tmp->setColor(white);
-                to_update[i][j] = tmp;
-                //currentPopulation_--;
+                  //Kill it next turn
+                  if (aliveNeighbors < 2)
+                  {
+                    //count++;
+                    tmp->setNextAlive(false);
+                    tmp->setColor(white);
+                    to_update[i][j] = tmp;
+                    //currentPopulation_--;
+                  }
+                  //Stays a live next turn
+                  if (aliveNeighbors ==2 || aliveNeighbors == 3)
+                  {
+                    continue;
+                  }
+                  //Kill it next turn
+                  if (aliveNeighbors > 3 )
+                  {
+                      tmp->setNextAlive(false);
+                      tmp->setColor(white);
+                      to_update[i][j] = tmp;
+                      //currentPopulation_--;
+                      //count ++;
+                  }
               }
-              //Stays a live next turn
-              if (aliveNeighbors ==2 || aliveNeighbors == 3)
+              //If cell is dead...
+              else
               {
-                continue;
+                  //Becomes alive
+                  if (aliveNeighbors == 3 )
+                  {
+                      tmp->setNextAlive(true);
+                      tmp->setColor(red);
+                      to_update[i][j] = tmp;
+                      //currentPopulation_++;
+                      //add ++;
+                  }
               }
-              //Kill it next turn
-              if (aliveNeighbors > 3 )
-              {
-                  tmp->setNextAlive(false);
-                  tmp->setColor(white);
-                  to_update[i][j] = tmp;
-                  //currentPopulation_--;
-                  //count ++;
-              }
-          }
-          //If cell is dead...
-          else
-          {
-              //Becomes alive
-              if (aliveNeighbors == 3 )
-              {
-                  tmp->setNextAlive(true);
-                  tmp->setColor(red);
-                  to_update[i][j] = tmp;
-                  //currentPopulation_++;
-                  //add ++;
-              }
-          }
+            }
         }
-    }
 
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 20; j++)
+        for (int i = 0; i < 10; i++)
         {
-            bool set_cell_state = to_update[i][j]->get_alive_next();
-            to_update[i][j]->setAlive(set_cell_state);
+            for (int j = 0; j < 20; j++)
+            {
+                bool set_cell_state = to_update[i][j]->get_alive_next();
+                to_update[i][j]->setAlive(set_cell_state);
+            }
         }
+
+
+        //qDebug() << checkPopulation();
+        currentPopulation_ = checkPopulation();
+        makeBarChart();
+        g.setCellGrid(to_update);
+        ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_ * 100) / 200) + QString("%)"));
+
+        //Call the updateGraph function
+        UpdateGraph();
+
+        cellScene_->update();
     }
-
-
-    //qDebug() << checkPopulation();
-    currentPopulation_ = checkPopulation();
-    makeBarChart();
-    g.setCellGrid(to_update);
-    ui->PopLabel->setText(QString("Population: ") + QString::number(currentPopulation_) + QString(" (") + QString::number((currentPopulation_ * 100) / 200) + QString("%)"));
-
-    //Call the updateGraph function
-    UpdateGraph();
-
-    cellScene_->update();
 }
 
 void MainWindow::UpdateGraph()
@@ -220,6 +223,16 @@ void MainWindow::onResetButtonClicked()
     makeWindow();
 }
 
+void MainWindow::onMaxTurnsValueChanged(int input)
+{
+    //qDebug() << "GETTING SIGNAL";
+
+    //Sets a max range, here is [0, INT_MAX]
+    ui->MaxTurns->setRange(0, INT_MAX);
+
+    max_turn_ = input;
+}
+
 //Makes the whole window
 void MainWindow::makeWindow()
 {
@@ -274,6 +287,9 @@ void MainWindow::makeWindow()
     connect(ui->ResetButton, &QAbstractButton::clicked, this, &MainWindow::onResetButtonClicked);
     connect(ui->SpeedSlider, &QSlider::valueChanged, this, &MainWindow::onSpeedSliderSliderMoved);
 
+    //connect(ui->MaxTurns, &QSpinBox::setValue, this, &MainWindow::onMaxTurnsValueChanged);
+    connect(ui->MaxTurns, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::onMaxTurnsValueChanged);
+
     //update labels
     ui->TurnLabel->setText(QString("Turn: 0"));
 
@@ -294,5 +310,6 @@ void MainWindow::makeWindow()
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     turn_ = 0;
+    max_turn_ = INT_MAX; //Initialize to a very large number
     makeWindow();
 }

@@ -40,6 +40,7 @@ private:
 
     Grid g; //Makes an instance of the board with pointers scene and view
     int turn_;
+    int max_turn_; //Input entered field which determines the number of max turns
     int currentPopulation_;
     QTimer* timer_;
     double speed_;
@@ -55,6 +56,7 @@ private slots:
     void onPlayButtonClicked();
     void onPauseButtonClicked();
     void onResetButtonClicked();
+    void onMaxTurnsValueChanged(int input);
 };
 
 #endif
